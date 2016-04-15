@@ -47,7 +47,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           'osds' => ["ceph2", "ceph3", "ceph4"],
           'mons' => ["ceph1", "ceph2", "ceph3"],
           'mdss' => ["ceph1"],
-          'rdgws' => ["ceph1"]
+          'rdgws' => ["ceph1"],
+          'flocker_agents' => ["ceph2", "ceph3", "ceph4"],
+          'flocker_control_service' => ["ceph1"],
+          'nodes:children' => ["flocker_agents", "flocker_control_service"]
           }
         end
       end

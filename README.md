@@ -3,10 +3,10 @@
 
 ## STILL EXPERIMENTAL!
 
-What you will need
+### What you will need
 
-Vagrant
-Virtialbox
+- Vagrant
+- Virtialbox
 
 ```
 vagrant plugin install vai
