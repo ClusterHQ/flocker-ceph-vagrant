@@ -98,6 +98,27 @@ vagrant ssh ceph1 -c "sudo ceph -s"
   client io 2030 B/s wr, 17 op/s
 ```
 
+Check your Flocker Cluster
+```
+vagrant ssh ceph1
+sudo su
+curl --cacert /etc/flocker/cluster.crt  --cert /etc/flocker/plugin.crt --key /etc/flocker/plugin.key --header "Content-type: application/json" https://ceph1:4523/v1/state/nodes | python -m json.tool
+[
+    {
+        "host": "192.168.5.5",
+        "uuid": "3aab9ca0-a48e-4beb-8f8c-4e814f8cecf8"
+    },
+    {
+        "host": "192.168.5.3",
+        "uuid": "2a00f5c9-b843-41c7-adf4-99013d09a594"
+    },
+    {
+        "host": "192.168.5.4",
+        "uuid": "ac3cc217-7706-447b-b1ff-a0c774d95c6b"
+    }
+]
+```
+
 ## License 
 
 MIT / BSD
