@@ -54,7 +54,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           ansible.inventory_dir = 'ansible/inventory'
           ansible.groups = {
             'osds' => ["ceph2", "ceph3", "ceph4"],
-            'mons' => ["ceph1", "ceph2", "ceph3"],
+            'mons' => ["ceph2", "ceph3", "ceph4"],
             'mdss' => ["ceph1"],
             'rdgws' => ["ceph1"],
             'flocker_agents' => ["ceph2", "ceph3", "ceph4"],
@@ -69,7 +69,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           ansible.limit = "all"
           ansible.groups = {
             'osds' => ["ceph2", "ceph3", "ceph4"],
-            'mons' => ["ceph1", "ceph2", "ceph3"],
+            'mons' => ["ceph2", "ceph3", "ceph4"],
             'mdss' => ["ceph1"],
             'rdgws' => ["ceph1"],
             'flocker_agents' => ["ceph2", "ceph3", "ceph4"],

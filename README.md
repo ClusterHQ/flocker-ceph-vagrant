@@ -7,23 +7,32 @@
 
 - Vagrant
 - VirtualBox
+- Git
+- Ansible
 
 This repo has been tested on
 - Vagrant 1.7.4
 - VirtualBox Version 5.0.16 r105871
+- Ansible 2.0.1.0
 
 ## How to use this repository
 
-Getting started
+This repository will set up 4 local virtualbox VMs. You will need 2 to 4 GB of memory.
+
+1. RadosGW, MDS, Flocker Control
+2. OSD, MON, Flocker Agent + Docker Plugin
+3. OSD, MON, Flocker Agent + Docker Plugin
+4. OSD, MON, Flocker Agent + Docker Plugin
+
+Getting started, clone this repo, install some tools.
 ```
-vagrant plugin install vai
-git clone [this repo]
-cd [this repo]
-brew install ansible # or you can install ansible inside a python virtualenv.
+git clone https://github.com/ClusterHQ/flocker-ceph-vagrant
+cd flocker-ceph-vagrant
+brew install ansible # (or you can install ansible inside a python virtualenv.)
 vagrant plugin install vai
 ```
 
-Next
+Next, clone ceph-ansible and copy some pre-baked configuration provided as part of this repo.
 ```
 git clone https://github.com/ceph/ceph-ansible.git
 cd  ceph-ansible 
@@ -71,9 +80,9 @@ ceph3
 ceph4
 
 [mons]
-ceph1
 ceph2
 ceph3
+ceph4
 
 [mdss]
 ceph1
@@ -106,7 +115,7 @@ flocker_control_service
 
 Also in either case, once complete, a healthy ceph cluster should exist
 ```
-vagrant ssh ceph1 -c "sudo ceph -s"
+vagrant ssh ceph2 -c "sudo ceph -s"
     cluster 4a158d27-f750-41d5-9e7f-26ce4c9d2d45
      health HEALTH_OK
      monmap e1: 3 mons at {ceph1=192.168.5.2:6789/0,ceph2=192.168.5.3:6789/0,ceph3=192.168.5.4:6789/0}
@@ -122,7 +131,7 @@ vagrant ssh ceph1 -c "sudo ceph -s"
 
 Check your Flocker Cluster
 ```
-vagrant ssh ceph1 -c "sudo curl --cacert /etc/flocker/cluster.crt \
+$ vagrant ssh ceph1 -c "sudo curl --cacert /etc/flocker/cluster.crt \
    --cert /etc/flocker/plugin.crt \
    --key /etc/flocker/plugin.key \
    --header 'Content-type: application/json' \
@@ -148,7 +157,9 @@ Use your Flocker Cluster
 $ vagrant ssh ceph3 -c "sudo docker volume create -d flocker --name test -o size=10G"
 $ vagrant ssh ceph3 -c "sudo df -h | grep flocker"
 /dev/rbd1       9.8G   23M  9.2G   1% /flocker/2879f72f-680a-404c-8610-f1f9d87cc1f1
+```
 
+```
 $ vagrant ssh ceph3 -c "sudo docker run --volume-driver flocker \
    -v test:/data --name test-container -itd busybox"
 Unable to find image 'busybox:latest' locally
@@ -158,14 +169,20 @@ a3ed95caeb02: Pull complete
 Digest: sha256:4a887a2326ec9e0fa90cce7b4764b0e627b5d6afcb81a3f73c85dc29cea00048
 Status: Downloaded newer image for busybox:latest
 d943aa00250c551bb0b84f9eb31c03662369e5ff8fa69f070b78941fa80e4640
+```
 
+```
 $ vagrant ssh ceph3 -c "sudo docker ps"
 CONTAINER ID  IMAGE    COMMAND  CREATED        STATUS       PORTS   NAMES
 d943aa00250c  busybox  "sh"     24 seconds ago Up 21 seconds        test-container
+```
 
+```
 $ vagrant ssh ceph3 -c "sudo docker inspect -f "{{.Mounts}}" test-container"
 [{test /flocker/83a09e31-f6a9-478e-8e7b-53b978f79c21 /data flocker  true rprivate}]
+```
 
+```
 $ vagrant ssh ceph1 -c "sudo curl --cacert /etc/flocker/cluster.crt \
    --cert /etc/flocker/plugin.crt \
    --key /etc/flocker/plugin.key \
@@ -179,7 +196,9 @@ $ vagrant ssh ceph1 -c "sudo curl --cacert /etc/flocker/cluster.crt \
         "primary": "5f4be886-3cf7-434b-975f-5babeea63a63"
     }
 ]
+```
 
+```
 $ vagrant ssh ceph1 -c "sudo curl --cacert /etc/flocker/cluster.crt \
    --cert /etc/flocker/plugin.crt \
    --key /etc/flocker/plugin.key \
@@ -198,6 +217,36 @@ $ vagrant ssh ceph1 -c "sudo curl --cacert /etc/flocker/cluster.crt \
     }
 ]
 ```
+
+Move the volume from `ceph3` to `ceph4`
+```
+$ vagrant ssh ceph3 -c "sudo docker rm -f test-container"
+$ vagrant ssh ceph4 -c "sudo docker run --volume-driver flocker \
+   -v test:/data --name test-container -itd busybox"
+Unable to find image 'busybox:latest' locally
+latest: Pulling from library/busybox
+385e281300cc: Pull complete
+a3ed95caeb02: Pull complete
+Digest: sha256:4a887a2326ec9e0fa90cce7b4764b0e627b5d6afcb81a3f73c85dc29cea00048
+Status: Downloaded newer image for busybox:latest
+9040ffcc96f704206ccb1e71a354494dfab7a4d25e72c87a4c88bbeefdfdf85d
+```
+
+Check its own the correct host now
+```
+# Not on ceph3 anymore
+$ vagrant ssh ceph3 -c "sudo docker ps"
+$ vagrant ssh ceph3 -c "sudo df -h | grep flocker"
+
+# Now its present on ceph4
+$ vagrant ssh ceph4 -c "sudo docker ps"
+CONTAINER ID  IMAGE    COMMAND  CREATED        STATUS       PORTS   NAMES
+9040ffcc96f7  busybox  "sh"     24 seconds ago Up 21 seconds        test-container
+
+$ vagrant ssh ceph4 -c "sudo df -h | grep flocker"
+/dev/rbd1       9.8G   23M  9.2G   1% /flocker/83a09e31-f6a9-478e-8e7b-53b978f79c21
+```
+
 ## More information
 
 In case you are curious , running behind the scenes inside vagrant is ansible and you can re run it after `vagrant up` for re-runs because we have output the ansible inventory to your local machine.
