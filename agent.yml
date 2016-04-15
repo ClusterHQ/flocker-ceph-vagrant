@@ -1,0 +1,9 @@
+version: 1
+  control-service:
+    hostname: "ceph1.local"
+  dataset:
+    backend: "ceph_flocker_driver"
+    cluster_name: "ceph"
+    user_id: "admin"
+    ceph_conf_path: "/etc/ceph/ceph.conf"
+    storage_pool: "rbd"

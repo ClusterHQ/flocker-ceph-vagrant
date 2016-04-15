@@ -1,0 +1,8 @@
+- hosts: nodes
+  user: vagrant
+  roles:
+    - role: ClusterHQ.flocker
+      flocker_cluster_name: my_flocker_cluster
+      flocker_api_cert_name: plugin
+      flocker_install_docker_plugin: true
+      flocker_local_tempdir: "{{ playbook_dir }}/certs"
