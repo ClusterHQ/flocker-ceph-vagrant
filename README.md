@@ -143,6 +143,38 @@ d943aa00250c  busybox  "sh"     24 seconds ago Up 21 seconds        test-contain
 
 $ vagrant ssh ceph3 -c "sudo docker inspect -f "{{.Mounts}}" test-container"
 [{test /flocker/83a09e31-f6a9-478e-8e7b-53b978f79c21 /data flocker  true rprivate}]
+
+$ vagrant ssh ceph1 -c "sudo curl --cacert /etc/flocker/cluster.crt \
+   --cert /etc/flocker/plugin.crt \
+   --key /etc/flocker/plugin.key \
+   --header 'Content-type: application/json' \
+   https://ceph1:4523/v1/state/datasets | python -m json.tool"
+[
+    {
+        "dataset_id": "83a09e31-f6a9-478e-8e7b-53b978f79c21",
+        "maximum_size": 10737418240,
+        "path": "/flocker/83a09e31-f6a9-478e-8e7b-53b978f79c21",
+        "primary": "5f4be886-3cf7-434b-975f-5babeea63a63"
+    }
+]
+
+$ vagrant ssh ceph1 -c "sudo curl --cacert /etc/flocker/cluster.crt \
+   --cert /etc/flocker/plugin.crt \
+   --key /etc/flocker/plugin.key \
+   --header 'Content-type: application/json' \
+   https://ceph1:4523/v1/configuration/datasets | python -m json.tool"
+[
+    {
+        "dataset_id": "83a09e31-f6a9-478e-8e7b-53b978f79c21",
+        "deleted": false,
+        "maximum_size": 10737418240,
+        "metadata": {
+            "maximum_size": "10737418240",
+            "name": "test"
+        },
+        "primary": "5f4be886-3cf7-434b-975f-5babeea63a63"
+    }
+]
 ```
 ## More information
 
