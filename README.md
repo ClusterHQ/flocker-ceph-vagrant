@@ -247,6 +247,13 @@ $ vagrant ssh ceph4 -c "sudo df -h | grep flocker"
 /dev/rbd1       9.8G   23M  9.2G   1% /flocker/83a09e31-f6a9-478e-8e7b-53b978f79c21
 ```
 
+To list your volumes in Ceph use the below command.
+```
+$ vagrant ssh ceph2 -c "sudo  rbd ls"
+flocker-83a09e31-f6a9-478e-8e7b-53b978f79c21
+flocker-d2bfb016-e981-4f87-827b-9af6c0575ba2
+```
+
 ## More information
 
 In case you are curious , running behind the scenes inside vagrant is ansible and you can re run it after `vagrant up` for re-runs because we have output the ansible inventory to your local machine.
