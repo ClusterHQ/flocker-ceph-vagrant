@@ -56,6 +56,13 @@
     mode: 0700
   sudo: yes
 
+- name: create plugin cert if its getting created
+  shell: "flocker-ca create-api-certificate plugin-cert-20b0e0b9-7a4e-4c88-9dd3-7aae1201ac72"
+  args:
+    chdir: "{{ flocker_local_tempdir }}"
+  delegate_to: 127.0.0.1
+  when: flocker_install_docker_plugin 
+
 - include: configure_control_service.yml
   when: "'{{ flocker_control_service_groupname }}' in group_names"
 

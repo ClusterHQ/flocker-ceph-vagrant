@@ -44,9 +44,15 @@ vagrant up --provider=virtualbox
 Create but don't provision, provision later.
 ```
 vagrant up --no-provision --provider=virtualbox
+vagrant provision
+```
+
+What is running behind the scenes is this command, you can re run it after `vagrant up` for re-runs.
+```
 ansible-playbook -i ansible/inventory/vagrant_ansible_inventory site.yml \
    --extra-vars "fsid=4a158d27-f750-41d5-9e7f-26ce4c9d2d45 \
-   monitor_secret=AQAWqilTCDh7CBAAawXt6kyTgLFCxSvJhTEmuw=="
+   monitor_secret=AQAWqilTCDh7CBAAawXt6kyTgLFCxSvJhTEmuw== \
+   flocker_agent_yml_path=${PWD}/../agent.yml"
 ```
 
 In either case, an inventory is used, and should be written to `ansible/inventory`
@@ -90,17 +96,6 @@ vagrant ssh ceph1 -c "sudo ceph -s"
             221 MB used, 5887 MB / 6109 MB avail
                  320 active+clean
   client io 2030 B/s wr, 17 op/s
-```
-
-Flocker, with the first option, flocker should already be installed, if you used --no-provision
-please follow below to install flocker.
-
-//TODO enable installing ceph driver. (through ansible? though script after ansible completes?)
-
-```
-ansible-playbook -i ansible/inventory/vagrant_ansible_inventory \
-    ${PWD}/../ceph-flocker-installer.yml  \
-    --extra-vars "flocker_agent_yml_path=${PWD}/../agent.yml"
 ```
 
 ## License 

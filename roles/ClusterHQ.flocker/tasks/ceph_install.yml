@@ -1,5 +1,5 @@
 ---
 - name: install ceph driver
-  command: /opt/flocker/bin/pip install git+https://github.com/ClusterHQ/ceph-flocker-driver.git@master 
+  command: /opt/flocker/bin/pip "install git+https://github.com/ClusterHQ/ceph-flocker-driver.git@master" 
   sudo: yes
 
