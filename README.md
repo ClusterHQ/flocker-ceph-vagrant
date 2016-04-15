@@ -19,7 +19,7 @@ Getting started
 vagrant plugin install vai
 git clone [this repo]
 cd [this repo]
-brew install ansible
+brew install ansible # or you can install ansible inside a python virtualenv.
 vagrant plugin install vai
 ```
 
@@ -27,7 +27,7 @@ Next
 ```
 git clone https://github.com/ceph/ceph-ansible.git
 cd  ceph-ansible 
-# this will work when https://github.com/ClusterHQ/ansible-role-flocker/pull/3 is merged
+# **this will work when https://github.com/ClusterHQ/ansible-role-flocker/pull/3 is merged**
 # ansible-galaxy install ClusterHQ.flocker -p ../roles
 cp  ../roles/ClusterHQ.flocker roles/
 ansible-galaxy install marvinpinto.docker -p ./roles
