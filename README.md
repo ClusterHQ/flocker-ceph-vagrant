@@ -80,6 +80,28 @@ ceph1
 
 [rdgws]
 ceph1
+
+[flocker_agents]
+ceph2
+ceph3
+ceph4
+
+[flocker_control_service]
+ceph1
+
+[flocker_docker_plugin]
+ceph2
+ceph3
+ceph4
+
+[flocker_ceph]
+ceph2
+ceph3
+ceph4
+
+[nodes:children]
+flocker_agents
+flocker_control_service
 ```
 
 Also in either case, once complete, a healthy ceph cluster should exist
