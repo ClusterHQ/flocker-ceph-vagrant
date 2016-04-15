@@ -44,14 +44,36 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         node_config.vm.provision "vai" do |ansible|
           ansible.inventory_dir = 'ansible/inventory'
           ansible.groups = {
-          'osds' => ["ceph2", "ceph3", "ceph4"],
-          'mons' => ["ceph1", "ceph2", "ceph3"],
-          'mdss' => ["ceph1"],
-          'rdgws' => ["ceph1"],
-          'flocker_agents' => ["ceph2", "ceph3", "ceph4"],
-          'flocker_control_service' => ["ceph1"],
-          'nodes:children' => ["flocker_agents", "flocker_control_service"]
+            'osds' => ["ceph2", "ceph3", "ceph4"],
+            'mons' => ["ceph1", "ceph2", "ceph3"],
+            'mdss' => ["ceph1"],
+            'rdgws' => ["ceph1"],
+            'flocker_agents' => ["ceph2", "ceph3", "ceph4"],
+            'flocker_control_service' => ["ceph1"],
+            'flocker_docker_plugin' => ["ceph2", "ceph3", "ceph4"],
+            'flocker_ceph' => ["ceph2", "ceph3", "ceph4"],
+            'nodes:children' => ["flocker_agents", "flocker_control_service"]
           }
+        end
+        node_config.vm.provision "ansible" do |ansible|
+          ansible.playbook = 'site.yml'
+          ansible.limit = "all"
+          ansible.groups = {
+            'osds' => ["ceph2", "ceph3", "ceph4"],
+            'mons' => ["ceph1", "ceph2", "ceph3"],
+            'mdss' => ["ceph1"],
+            'rdgws' => ["ceph1"],
+            'flocker_agents' => ["ceph2", "ceph3", "ceph4"],
+            'flocker_control_service' => ["ceph1"],
+            'flocker_docker_plugin' => ["ceph2", "ceph3", "ceph4"],
+            'flocker_ceph' => ["ceph2", "ceph3", "ceph4"],
+            'nodes:children' => ["flocker_agents", "flocker_control_service", "flocker_docker_plugin", "flocker_ceph"]
+          }
+          ansible.extra_vars = {
+            fsid: "4a158d27-f750-41d5-9e7f-26ce4c9d2d45",
+            monitor_secret: "AQAWqilTCDh7CBAAawXt6kyTgLFCxSvJhTEmuw==",
+            flocker_agent_yml_path: "../agent.yml"
+          }  
         end
       end
     end

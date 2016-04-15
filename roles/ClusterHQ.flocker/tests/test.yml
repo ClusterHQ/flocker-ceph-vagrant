@@ -1,0 +1,7 @@
+---
+- hosts: nodes
+  remote_user: travis
+  vars:
+    flocker_agent_yml_path: "./agent.yml"
+  roles:
+    - { role: ../../ansible-role-flocker}
