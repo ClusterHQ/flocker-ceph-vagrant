@@ -33,7 +33,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           node_config.vm.provider "virtualbox" do |vb|
             vb.customize [ "createmedium", "disk", "--format", "VDI", "--filename", "disk-#{node[:hostname]}-#{d}", "--size", "2048"]
             vb.customize [ "storageattach", :id, "--storagectl", "SATAController", "--port", 3+d, "--device", 0, "--type", "hdd", "--medium", "disk-#{node[:hostname]}-#{d}.vdi" ]
-            vb.customize [ "modifyvm", :id, "--memory", "512" ]
           end
         end
       end
@@ -42,6 +41,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
       if node[:hostname] == "ceph2"
         node_config.vm.network "private_network", ip: "#{ceph2ip}"
+        node_config.vm.provider :virtualbox do |vb|
+          vb.customize ["modifyvm", :id, "--memory", "2048"]
+        end
       end
       if node[:hostname] == "ceph3"
         node_config.vm.network "private_network", ip: "#{ceph3ip}"
