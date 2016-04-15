@@ -22,6 +22,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   osd_nodes.each do |node|
     config.vm.define node[:hostname] do |node_config|
       node_config.vm.host_name = "#{node[:hostname]}.#{domain}"
+      node_config.vm.provider :virtualbox do |vb|
+        vb.customize ["modifyvm", :id, "--memory", "1024"]
+      end
       node_config.vm.provision "shell" do |s|
           s.inline = "echo '192.168.5.2   ceph1 ceph1.local ceph1.ceph.local' | sudo tee -a /etc/hosts"
       end

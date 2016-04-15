@@ -6,7 +6,11 @@
 ### What you will need
 
 - Vagrant
-- Virtialbox
+- VirtualBox
+
+This repo has been tested on
+- Vagrant 1.7.4
+- VirtualBox Version 5.0.16 r105871
 
 ## How to use this repository
 
@@ -23,7 +27,9 @@ Next
 ```
 git clone https://github.com/ceph/ceph-ansible.git
 cd  ceph-ansible 
-ansible-galaxy install ClusterHQ.flocker -p ../roles
+# this will work when https://github.com/ClusterHQ/ansible-role-flocker/pull/3 is merged
+# ansible-galaxy install ClusterHQ.flocker -p ../roles
+cp  ../roles/ClusterHQ.flocker roles/
 ansible-galaxy install marvinpinto.docker -p ./roles
 cp  group_vars/mons.sample  group_vars/mons
 cp  ../osds.group_vars  group_vars/osds
@@ -33,6 +39,8 @@ cp  ../site.yml .
 mv Vagrantfile Vagrantfile.original
 cp ../Vagrantfile Vagrantfile
 ```
+
+> Note: the next command will take ~5-10 minutes to complete.
 
 Create and Provision everything
 ```
@@ -45,14 +53,6 @@ Create but don't provision, provision later.
 ```
 vagrant up --no-provision --provider=virtualbox
 vagrant provision
-```
-
-What is running behind the scenes is this command, you can re run it after `vagrant up` for re-runs.
-```
-ansible-playbook -i ansible/inventory/vagrant_ansible_inventory site.yml \
-   --extra-vars "fsid=4a158d27-f750-41d5-9e7f-26ce4c9d2d45 \
-   monitor_secret=AQAWqilTCDh7CBAAawXt6kyTgLFCxSvJhTEmuw== \
-   flocker_agent_yml_path=${PWD}/../agent.yml"
 ```
 
 In either case, an inventory is used, and should be written to `ansible/inventory`
@@ -100,9 +100,11 @@ vagrant ssh ceph1 -c "sudo ceph -s"
 
 Check your Flocker Cluster
 ```
-vagrant ssh ceph1
-sudo su
-curl --cacert /etc/flocker/cluster.crt  --cert /etc/flocker/plugin.crt --key /etc/flocker/plugin.key --header "Content-type: application/json" https://ceph1:4523/v1/state/nodes | python -m json.tool
+vagrant ssh ceph1 -c "sudo curl --cacert /etc/flocker/cluster.crt \
+   --cert /etc/flocker/plugin.crt \
+   --key /etc/flocker/plugin.key \
+   --header 'Content-type: application/json' \
+   https://ceph1:4523/v1/state/nodes | python -m json.tool"
 [
     {
         "host": "192.168.5.5",
@@ -118,6 +120,50 @@ curl --cacert /etc/flocker/cluster.crt  --cert /etc/flocker/plugin.crt --key /et
     }
 ]
 ```
+
+Use your Flocker Cluster
+```
+$ vagrant ssh ceph3 -c "sudo docker volume create -d flocker --name test -o size=10G"
+$ vagrant ssh ceph3 -c "sudo df -h | grep flocker"
+/dev/rbd1       9.8G   23M  9.2G   1% /flocker/2879f72f-680a-404c-8610-f1f9d87cc1f1
+
+$ vagrant ssh ceph3 -c "sudo docker run --volume-driver flocker \
+   -v test:/data --name test-container -itd busybox"
+Unable to find image 'busybox:latest' locally
+latest: Pulling from library/busybox
+385e281300cc: Pull complete
+a3ed95caeb02: Pull complete
+Digest: sha256:4a887a2326ec9e0fa90cce7b4764b0e627b5d6afcb81a3f73c85dc29cea00048
+Status: Downloaded newer image for busybox:latest
+d943aa00250c551bb0b84f9eb31c03662369e5ff8fa69f070b78941fa80e4640
+
+$ vagrant ssh ceph3 -c "sudo docker ps"
+CONTAINER ID  IMAGE    COMMAND  CREATED        STATUS       PORTS   NAMES
+d943aa00250c  busybox  "sh"     24 seconds ago Up 21 seconds        test-container
+
+$ vagrant ssh ceph3 -c "sudo docker inspect -f "{{.Mounts}}" test-container"
+[{test /flocker/83a09e31-f6a9-478e-8e7b-53b978f79c21 /data flocker  true rprivate}]
+```
+## More information
+
+In case you are curious , running behind the scenes inside vagrant is ansible and you can re run it after `vagrant up` for re-runs because we have output the ansible inventory to your local machine.
+```
+ansible-playbook -i ansible/inventory/vagrant_ansible_inventory site.yml \
+   --extra-vars "fsid=4a158d27-f750-41d5-9e7f-26ce4c9d2d45 \
+   monitor_secret=AQAWqilTCDh7CBAAawXt6kyTgLFCxSvJhTEmuw== \
+   flocker_agent_yml_path=${PWD}/../agent.yml"
+```
+
+## Thanks
+
+The below resources helped us get this going.
+
+- https://www.vagrantup.com/docs/provisioning/ansible_intro.html
+- https://github.com/ceph/ceph-ansible 
+- https://github.com/ClusterHQ/ansible-role-flocker/
+- https://github.com/ClusterHQ/ceph-flocker-driver
+- https://github.com/MatthewMi11er/vai
+- https://github.com/ceph/ceph-ansible/issues/136
 
 ## License 
 
