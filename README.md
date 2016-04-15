@@ -118,8 +118,8 @@ Also in either case, once complete, a healthy ceph cluster should exist
 vagrant ssh ceph2 -c "sudo ceph -s"
     cluster 4a158d27-f750-41d5-9e7f-26ce4c9d2d45
      health HEALTH_OK
-     monmap e1: 3 mons at {ceph1=192.168.5.2:6789/0,ceph2=192.168.5.3:6789/0,ceph3=192.168.5.4:6789/0}
-            election epoch 4, quorum 0,1,2 ceph1,ceph2,ceph3
+     monmap e1: 3 mons at {ceph2=192.168.5.3:6789/0,ceph3=192.168.5.4:6789/0,ceph4=192.168.5.5:6789/0}
+            election epoch 4, quorum 0,1,2 ceph2,ceph3,ceph4
      mdsmap e6: 1/1/1 up {0=ceph1=up:active}
      osdmap e20: 6 osds: 6 up, 6 in
             flags sortbitwise
