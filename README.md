@@ -51,7 +51,7 @@ Then, copy some pre-baked configuration provided as part of this repo.
 ./../ready_env.sh
 ```
 
-> Note: the next command will take ~5-10 minutes to complete. It will take longer if its your first time running it because you will need to download the Vagrant `.box`.
+> Note: the next command will take ~10-12 minutes to complete. It will take longer if its your first time running it because you will need to download the Vagrant `.box`.
 
 Create and Provision everything
 ```
