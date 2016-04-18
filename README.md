@@ -157,6 +157,7 @@ $ vagrant ssh ceph1 -c "sudo curl --cacert /etc/flocker/cluster.crt \
 Use your Flocker Cluster
 ```
 $ vagrant ssh ceph3 -c "sudo docker volume create -d flocker --name test -o size=10G"
+(The mountpoint may take ~10s to show up if you run this command quckly after the above)
 $ vagrant ssh ceph3 -c "sudo df -h | grep flocker"
 /dev/rbd1       9.8G   23M  9.2G   1% /flocker/2879f72f-680a-404c-8610-f1f9d87cc1f1
 ```
