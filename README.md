@@ -48,7 +48,7 @@ cd ceph-ansible
 
 Then, copy some pre-baked configuration provided as part of this repo.
 ```
-./../ready_env.sh #(this is a shortcut for the below)
+./../ready_env.sh
 ```
 
 > Note: the next command will take ~5-10 minutes to complete. It will take longer if its your first time running it because you will need to download the Vagrant `.box`.
