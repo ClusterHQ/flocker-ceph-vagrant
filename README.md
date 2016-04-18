@@ -14,6 +14,7 @@ This repo has been tested on
 - Vagrant 1.7.4
 - VirtualBox Version 5.0.16 r105871
 - Ansible 2.0.1.0
+- Mac OSX El Capitan 10.11.2
 
 ## How to use this repository
 
@@ -28,7 +29,8 @@ Getting started, clone this repo, install some tools.
 
 Install a few things
 ```
-brew install ansible # (or you can install ansible inside a python virtualenv.)
+brew install flocker-1.11.0   # (this lets us use `flocker-ca`)
+brew install ansible          # (or you can install ansible inside a python virtualenv.)
 vagrant plugin install vai
 ```
 
