@@ -32,10 +32,18 @@ brew install ansible # (or you can install ansible inside a python virtualenv.)
 vagrant plugin install vai
 ```
 
-Next, clone ceph-ansible and copy some pre-baked configuration provided as part of this repo.
+Next, clone ceph-ansible.
 ```
 git clone https://github.com/ceph/ceph-ansible.git
-cd  ceph-ansible 
+cd ceph-ansible
+```
+
+Then, copy some pre-baked configuration provided as part of this repo.
+```
+./../ready_env.sh #(this is a shortcut for the below)
+
+  OR 
+
 # **this will work when https://github.com/ClusterHQ/ansible-role-flocker/pull/3 is merged**
 # ansible-galaxy install ClusterHQ.flocker -p ../roles
 cp  ../roles/ClusterHQ.flocker roles/
