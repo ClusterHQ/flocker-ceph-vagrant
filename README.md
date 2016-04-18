@@ -25,11 +25,17 @@ This repository will set up 4 local virtualbox VMs. You will need 2 to 4 GB of m
 4. OSD, MON, Flocker Agent + Docker Plugin
 
 Getting started, clone this repo, install some tools.
+
+Install a few things
+```
+brew install ansible # (or you can install ansible inside a python virtualenv.)
+vagrant plugin install vai
+```
+
+Clone this Repository, `cd` to it. 
 ```
 git clone https://github.com/ClusterHQ/flocker-ceph-vagrant
 cd flocker-ceph-vagrant
-brew install ansible # (or you can install ansible inside a python virtualenv.)
-vagrant plugin install vai
 ```
 
 Next, clone ceph-ansible.
@@ -41,23 +47,9 @@ cd ceph-ansible
 Then, copy some pre-baked configuration provided as part of this repo.
 ```
 ./../ready_env.sh #(this is a shortcut for the below)
-
-  OR 
-
-# **this will work when https://github.com/ClusterHQ/ansible-role-flocker/pull/3 is merged**
-# ansible-galaxy install ClusterHQ.flocker -p ../roles
-cp  ../roles/ClusterHQ.flocker roles/
-ansible-galaxy install marvinpinto.docker -p ./roles
-cp  group_vars/mons.sample  group_vars/mons
-cp  ../osds.group_vars  group_vars/osds
-cp  ../all.group_vars  group_vars/all
-cp  ../ansible.cfg  .
-cp  ../site.yml .
-mv Vagrantfile Vagrantfile.original
-cp ../Vagrantfile Vagrantfile
 ```
 
-> Note: the next command will take ~5-10 minutes to complete.
+> Note: the next command will take ~5-10 minutes to complete. It will take longer if its your first time running it because you will need to download the Vagrant `.box`.
 
 Create and Provision everything
 ```
