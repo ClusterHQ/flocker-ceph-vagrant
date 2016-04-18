@@ -16,7 +16,7 @@ fi
 echo "Copying needed files."
 
 ansible-galaxy install marvinpinto.docker -p ./roles
-cp  ../roles/ClusterHQ.flocker roles/
+cp  -r ../roles/ClusterHQ.flocker roles/
 cp  group_vars/mons.sample  group_vars/mons
 cp  ../osds.group_vars  group_vars/osds
 cp  ../all.group_vars  group_vars/all
