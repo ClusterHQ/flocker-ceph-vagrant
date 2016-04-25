@@ -113,6 +113,8 @@ ceph4
 [nodes:children]
 flocker_agents
 flocker_control_service
+flocker_docker_plugin
+flocker_ceph
 ```
 
 Also in either case, once complete, a healthy ceph cluster should exist
