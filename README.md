@@ -52,7 +52,7 @@ Then, copy some pre-baked configuration provided as part of this repo.
 ../ready_env.sh
 ```
 
-> Note: the next command will take ~10-12 minutes to complete. It will take longer if its your first time running it because you will need to download the Vagrant `.box`.
+> Note: the next command will take ~10-12 minutes to complete. It will take longer if its your first time running it because you will need to download the Vagrant `.box`. It will also ask you for your password in order to modify `/etc/hosts` with convenient aliases to play around with your cluster.
 
 Create and Provision everything
 ```
