@@ -27,7 +27,8 @@ This repository will set up 4 local virtualbox VMs. You will need 2 to 4 GB of m
 
 Getting started, clone this repo, install some tools.
 
-Install a few things
+Install a few things.
+If you have any errors with installing `flocker-ca` see our [documentation](https://docs.clusterhq.com/en/latest/flocker-standalone/install-client.html) on installing the flocker client.
 ```
 brew install flocker-1.11.0   # (this lets us use `flocker-ca`)
 brew install ansible          # (or you can install ansible inside a python virtualenv.)
