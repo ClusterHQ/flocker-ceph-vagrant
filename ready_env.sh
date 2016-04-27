@@ -9,7 +9,7 @@ IS_CEPH_ANSIBLE=${PWD##*/}
 
 if [ "$IS_CEPH_ANSIBLE" != "ceph-ansible" ]
 then
-   echo "Must run script from `ceph-ansible` directory"
+   echo 'Must run script from `ceph-ansible` directory'
    exit 1
 fi
 
