@@ -1,8 +1,6 @@
 
 # Local Docker + Ceph + Flocker Cluster with Vagrant
 
-## STILL EXPERIMENTAL!
-
 ### What you will need
 
 - Vagrant
@@ -57,14 +55,6 @@ Then, copy some pre-baked configuration provided as part of this repo.
 Create and Provision everything
 ```
 vagrant up --provider=virtualbox
-```
-
-**or**
-
-Create but don't provision, provision later.
-```
-vagrant up --no-provision --provider=virtualbox
-vagrant provision
 ```
 
 In either case, an inventory is used, and should be written to `ansible/inventory`
