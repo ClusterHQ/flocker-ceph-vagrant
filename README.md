@@ -263,6 +263,9 @@ Optionally there are a few scripts you can run to get Swarm running on your smal
 Done: Swarm available at tcp://192.168.5.2:3375
 ```
 
+> Note, in order to talk to swarm you need to have the docker client available on your host machine.
+> If you do not, visit [Docker ToolBox](https://www.docker.com/products/docker-toolbox) to install it.
+
 To use your new Swarm cluster, run the following.
 ```
 export DOCKER_HOST=tcp://192.168.5.2:3375
