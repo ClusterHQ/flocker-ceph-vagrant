@@ -273,15 +273,21 @@ unset DOCKER_TLS_VERIFY
 docker info
 ```
 
-You should see output from swarm. Then, you can run container against Swarm just like any other docker.
+You should see output from swarm. Then, you can run containers against Swarm just like any other Docker daemon.
 ```
 $ docker run -d --name=redis-server  --volume-driver=flocker -v testfailover:/data --restart=always -e reschedule:on-node-failure  redis redis-server --appendonly yes
 66c0882809aaf1078f75c57433b85d2eadcebd35370bb16e360b57163e68c777
+```
 
+Notice the `NAMES` now has which ceph host the container is running on.
+```
 $ docker ps
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
 66c0882809aa        redis               "docker-entrypoint.sh"   26 seconds ago      Up 1 seconds        6379/tcp            ceph3/redis-server
+```
 
+Verify that the Redis server is actually using a Flocker volume.
+```
 $ docker inspect -f "{{.Mounts}}"  redis-server
 [{testfailover /flocker/ba263f1f-4ed5-440b-8450-6a5cc632ad2c /data flocker  true rprivate}]
 ```
