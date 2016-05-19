@@ -75,7 +75,7 @@ devices:
 # Thus devices with existing partition tables will not be used.
 # This mode prevents you from filling out the 'devices' variable above.
 #
-#osd_auto_discovery: false
+osd_auto_discovery: false
 
 # I. First scenario: journal and osd_data on the same device
 # Use 'true' to enable this scenario
@@ -101,7 +101,7 @@ journal_collocation: true
 # 1. Pre-allocate all the devices
 # 2. Progressively add new devices
 
-#raw_multi_journal: false
+raw_multi_journal: false
 #raw_journal_devices:
 #  - /dev/sdb
 #  - /dev/sdb
@@ -112,7 +112,7 @@ journal_collocation: true
 # IV. Fourth scenario: use directory instead of disk for OSDs
 # Use 'true' to enable this scenario
 
-#osd_directory: false
+osd_directory: false
 #osd_directories:
 #  - /var/lib/ceph/osd/mydir1
 #  - /var/lib/ceph/osd/mydir2
@@ -120,7 +120,7 @@ journal_collocation: true
 
 # V. Fith scenario: this will partition disks for BlueStore
 # Use 'true' to enable this scenario
-#bluestore: false
+bluestore: false
 
 
 ##########
