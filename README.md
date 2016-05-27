@@ -41,7 +41,6 @@ cd flocker-ceph-vagrant
 
 Next, clone ceph-ansible.
 ```
-git clone https://github.com/ceph/ceph-ansible.git
 cd ceph-ansible
 ```
 
