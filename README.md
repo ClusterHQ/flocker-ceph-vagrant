@@ -34,8 +34,9 @@ vagrant plugin install vai
 ```
 
 Clone this Repository, `cd` to it. 
+> note make sure to use `--recursive` to get the ceph-ansible submodule
 ```
-git clone https://github.com/ClusterHQ/flocker-ceph-vagrant
+git clone --recursive https://github.com/ClusterHQ/flocker-ceph-vagrant
 cd flocker-ceph-vagrant
 ```
 
